@@ -79,6 +79,7 @@ export const pages = [
   ...services.map((service) => ({
     ...service,
     kind: "service",
+    seoTitle: service.title + " | ROMANOWSKI AVOCATS",
     description: service.title + " : " + service.lead
   })),
   {
