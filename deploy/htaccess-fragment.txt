@@ -1,0 +1,21 @@
+# INFORMATION SEULEMENT : NE PAS REMPLACER LE .htaccess EXISTANT !
+# Garder les règles /admin BasicAuth, Passenger /apps et toute directive
+# d'hébergement/SSL déjà en place ; sauvegarder la version actuelle.
+#
+# Le fragment suivant suppose que RewriteEngine On figure dans la
+# configuration active ET qu'il est fusionné au bon endroit, APRÈS
+# les exclusions /admin et /apps et AVANT un catch-all existant.
+#
+# RewriteRule ^(?:admin|apps)(?:/|$) - [L,NC]
+# RewriteCond %{REQUEST_FILENAME} -f [OR]
+# RewriteCond %{REQUEST_FILENAME} -d
+# RewriteRule ^ - [L]
+# RewriteCond %{THE_REQUEST} \s/+(.+?)\.html(?:[\s?]) [NC]
+# RewriteRule ^(.+)\.html$ /$1 [R=301,L,NE]
+# RewriteCond %{REQUEST_FILENAME}.html -f
+# RewriteRule ^(.+?)/?$ $1.html [L]
+#
+# Tester localement et sur une copie/staging : certains anciens chemins
+# possèdent à la fois un répertoire et un fichier .html adjacent.
+# Dans ces cas, priorité au fichier .html pour conserver l'URL propre.
+# Cette règle est un exemple et doit être adaptée, pas copiée aveuglément.

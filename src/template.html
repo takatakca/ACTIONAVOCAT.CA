@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fr-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1b2b">
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="{{CANONICAL}}">
+  <link rel="stylesheet" href="{{ASSETS}}assets/style.css">
+  <link rel="icon" href="{{ASSETS}}assets/favicon.svg" type="image/svg+xml">
+  <script type="application/ld+json">{{JSONLD}}</script>
+  <script defer src="{{ASSETS}}assets/app.js"></script>
+  <title>{{TITLE}}</title>
+</head>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu principal</a>
+  <header class="site-header">
+    <div class="header-inner shell">
+      <a class="brand" href="/" aria-label="ROMANOWSKI AVOCATS — Accueil">
+        <span class="brand-symbol" aria-hidden="true">R</span>
+        <span class="brand-copy"><strong>ROMANOWSKI</strong><span>AVOCATS</span></span>
+      </a>
+      <button class="nav-toggle" type="button" aria-controls="navigation" aria-expanded="false">
+        <span aria-hidden="true" class="nav-icon"><i></i><i></i><i></i></span>
+        <span>Menu</span>
+      </button>
+      <nav class="navigation" id="navigation" aria-label="Navigation principale">
+        <a href="/" {{HOME_CURRENT}}>Accueil</a>
+        <a href="/#expertises">Expertises</a>
+        <a href="/#approche">Notre approche</a>
+        <a href="/contact" {{CONTACT_CURRENT}}>Contact</a>
+        <a class="nav-call" href="tel:+15148952000">514 895-2000</a>
+      </nav>
+    </div>
+  </header>
+  <main id="contenu">{{CONTENT}}</main>
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div>
+        <div class="footer-brand">ROMANOWSKI <span>AVOCATS</span></div>
+        <p>Litige civil et accompagnement juridique. Montréal, Québec.</p>
+      </div>
+      <div>
+        <h2>Pour nous joindre</h2>
+        <a href="tel:+15148952000">514 895-2000</a>
+        <a href="mailto:romanowskiyan@gmail.com">romanowskiyan@gmail.com</a>
+      </div>
+      <div>
+        <h2>Informations</h2>
+        <a href="/confidentialite">Confidentialité</a>
+        <a href="/contact">Coordonnées</a>
+      </div>
+    </div>
+    <div class="shell footer-base">
+      <span>© {{YEAR}} ROMANOWSKI AVOCATS</span>
+      <span>Ce site fournit de l'information générale et non un avis juridique. Aucun mandat n'est établi par la consultation du site.</span>
+    </div>
+  </footer>
+</body>
+</html>
