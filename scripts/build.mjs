@@ -98,7 +98,7 @@ function renderContent(page) {
 }
 function render(page) {
   const slug = page.slug;
-  const depth = slug.split("/").length - (slug ? 0 : 1);
+  const depth = slug ? slug.split("/").length - 1 : 0;
   const assets = "../".repeat(depth);
   const canonical = site + urlFor(slug);
   const jsonld = JSON.stringify({
