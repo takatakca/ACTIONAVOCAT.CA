@@ -1,0 +1,18 @@
+name: ActionAvocat — surveillance publique
+on:
+  schedule:
+    - cron: '25 13 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-public-routes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Vérifier le site actif sans le modifier
+        run: npm run audit:live
