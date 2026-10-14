@@ -110,7 +110,7 @@ function render(page) {
     "areaServed": "Québec, Canada"
   }).replaceAll("<", "\\u003c");
   return template
-    .replaceAll("{{TITLE}}", html(page.title))
+    .replaceAll("{{TITLE}}", html(page.seoTitle || page.title))
     .replaceAll("{{DESCRIPTION}}", html(page.description))
     .replaceAll("{{CANONICAL}}", html(canonical))
     .replaceAll("{{JSONLD}}", jsonld)
