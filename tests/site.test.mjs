@@ -30,6 +30,11 @@ test("output exists and links are routed internally", async () => {
     assert.match(rendered, /application\/ld\+json/);
     assert.match(rendered, /Aller au contenu principal/);
     assert.doesNotMatch(rendered, /\{\{[A-Z_]+\}\}/);
+    const depth = page.slug ? page.slug.split("/").length - 1 : 0;
+    const expectedAssets = "../".repeat(depth) + "assets/style.css";
+    assert.ok(rendered.includes('href="' + expectedAssets + '"'), "Wrong asset path in " + file);
+    assert.ok(rendered.includes('src="' + "../".repeat(depth) + 'assets/app.js"'));
+
     assert.doesNotMatch(rendered, /<form\b/i);
     for (const match of rendered.matchAll(/href="(\/[^"#?]*)(?:#[^"]*)?"/g)) {
       const target = match[1];
