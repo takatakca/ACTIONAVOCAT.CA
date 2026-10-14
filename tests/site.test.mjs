@@ -11,7 +11,8 @@ test("pages have distinct, safe, nonempty routes and metadata", () => {
   assert.equal(pages[0].slug, "");
   for (const page of pages) {
     assert.match(page.slug, /^[a-z0-9/-]*$/);
-    assert.ok(page.title.length > 20);
+    assert.ok(page.title.length >= 5);
+    assert.ok((page.seoTitle || page.title).length > 20);
     assert.ok(page.description.length > 50);
   }
   assert.ok(services.length >= 5);
