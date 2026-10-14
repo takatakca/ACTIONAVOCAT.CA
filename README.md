@@ -27,6 +27,8 @@ Puis visiter http://localhost:4173.
 - SEO : balises title/description/canonical, sitemap, robots et JSON-LD.
 - Audit public en lecture seule : npm run audit:live.
 - Pipeline GitHub Actions : build, tests et artefact de prévisualisation.
+- Surveillance quotidienne des URLs publiques via un second workflow GitHub Actions,
+  sans accès cPanel et sans modification du site.
 
 ## Limites et précautions
 
