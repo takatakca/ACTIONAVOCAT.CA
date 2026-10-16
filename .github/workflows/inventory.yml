@@ -29,5 +29,6 @@ jobs:
           path: |
             reports/public-routes.json
             reports/broken-links.json
+            reports/apache-redirects.review.conf
           if-no-files-found: error
           retention-days: 7

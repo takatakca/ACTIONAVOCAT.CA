@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { productionRoutes } from "../src/content.mjs";
 import { analyzeRoutes, safeFinalPath } from "./route-audit.mjs";
+import { renderApacheReview } from "./redirect-preview.mjs";
 
 const origin = "https://actionavocat.ca";
 const host = new URL(origin).hostname;
@@ -66,7 +67,8 @@ const report = {
 await writeFile(join(output, "public-routes.json"), JSON.stringify(report, null, 2) + "\n");
 const findings = analyzeRoutes(results);
 await writeFile(join(output, "broken-links.json"), JSON.stringify({ origin, generatedAt: report.generatedAt, ...findings }, null, 2) + "\n");
+await writeFile(join(output, "apache-redirects.review.conf"), renderApacheReview(results), "utf8");
 console.log("Inventaire terminé : " + results.length + " pages ; " +
   results.filter((row) => !row.html).length + " réponses non HTML/échecs.");
 console.log("Redirections proposées sous réserve de vérification : " + findings.redirects.length + "; problèmes non résolus : " + findings.unresolved.length);
-console.log("Artefacts : reports/public-routes.json et reports/broken-links.json. Aucune écriture vers le site public.");
+console.log("Artefacts : routes, liens cassés et suggestions Apache NON appliquées dans reports/. Aucune écriture vers le site public.");
