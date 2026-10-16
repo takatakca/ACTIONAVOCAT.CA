@@ -1,0 +1,19 @@
+{
+  "approvedBy": "À RENSEIGNER APRÈS VALIDATION",
+  "approvedAt": "2026-10-16T00:00:00Z",
+  "backupReference": "REFERENCE_NON_SENSIBLE_DE_SAUVEGARDE",
+  "rollbackReference": "REFERENCE_NON_SENSIBLE_DE_TEST_RESTAURATION",
+  "checks": {
+    "sourceCompared": false,
+    "publicRouteInventoryComplete": false,
+    "legalTextApproved": false,
+    "privacyPolicyApproved": false,
+    "contactDetailsVerified": false,
+    "legacyBackupVerified": false,
+    "rollbackTested": false,
+    "documentRootVerified": false,
+    "adminAndAppsPreserved": false,
+    "stagingVerified": false,
+    "productionChangeApproved": false
+  }
+}

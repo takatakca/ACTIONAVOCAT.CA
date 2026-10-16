@@ -17,6 +17,8 @@ Prérequis : Node.js 20+ (Node 22 recommandé), aucune dépendance npm externe.
     npm run build
     npm test
     npm run dev
+    npm run preflight        # échec voulu tant que la migration est incomplète
+    npm run inventory:public # exploration bornée et sans authentification
 
 Puis visiter http://localhost:4173.
 
@@ -42,9 +44,21 @@ l'actuel fichier .htaccess racine, sont hors périmètre de cette version.
 Le fragment de réécriture proposé dans deploy/htaccess-fragment.txt est
 informatif et doit être intégré après audit du fichier existant.
 
-Voir docs/PRODUCTION-INVENTORY.md et docs/HANDOFF.md pour la relève et les
+Voir [docs/AGENT_HANDOFF.md](docs/AGENT_HANDOFF.md), [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md),
+[docs/TASK_QUEUE.md](docs/TASK_QUEUE.md), [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+et [docs/DECISIONS.md](docs/DECISIONS.md) pour la relève et les
 étapes à effectuer avant un éventuel déploiement. Les textes ici sont des
 présentations générales ; ils ne constituent pas des avis juridiques.
 
 Aucun secret, configuration d'hébergement ou mécanisme de déploiement en
 production n'a été inventé.
+
+## Déploiement et conformité
+
+Le contrôle `npm run preflight` bloque volontairement une éventuelle
+substitution en production tant que les guides juridiques, les URLs
+historiques, `/admin`, `/apps`, les sauvegardes et les validations métier
+ne sont pas vérifiés. Le modèle d'approbation est
+`deploy/release-approval.example.json` : aucune valeur fictive ne vaut
+approbation. Le workflow manuel `inventory.yml` peut produire un inventaire
+public borné; il ne sauvegarde aucun corps de page HTML dans GitHub.

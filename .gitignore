@@ -6,3 +6,6 @@ reports/
 .env.*
 !.env.example
 *.log
+
+# A release approval requires manual verification, not accidental inclusion.
+# This file contains only non-sensitive approval metadata when created.
