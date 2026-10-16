@@ -62,3 +62,15 @@ ne sont pas vérifiés. Le modèle d'approbation est
 `deploy/release-approval.example.json` : aucune valeur fictive ne vaut
 approbation. Le workflow manuel `inventory.yml` peut produire un inventaire
 public borné; il ne sauvegarde aucun corps de page HTML dans GitHub.
+
+### Vérifications du 16 octobre 2026
+
+Le crawl contrôlé a relevé **34 URLs : 17 HTTP 200, 16 HTTP 404 et
+1 HTTP 403**. Quatorze corrections de liens vers des destinations
+vérifiées sont proposées, sans application au site hébergé.
+Voir [l'audit public](docs/PUBLIC_ROUTE_AUDIT.md).
+
+La prévisualisation est désormais `noindex` par défaut.
+Une éventuelle compilation indexable n'est autorisée qu'après reprise
+des routes, validation juridique, sauvegarde et passage du contrôle
+`npm run preflight`.

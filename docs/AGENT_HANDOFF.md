@@ -1,99 +1,90 @@
-# AGENT_HANDOFF — reprise immédiate
+# AGENT_HANDOFF — ACTIONAVOCAT.CA
 
-**Dernière session : 2026-10-16 (America/Toronto).**
-**Dépôt :** https://github.com/takatakca/ACTIONAVOCAT.CA
-**Branche :** `main`
-**Dernier commit technique validé au moment de la rédaction :**
-`181bf83f51c94c9e8910cc6546bd57475251e993`.
-**Important :** la présente mise à jour de documentation crée un commit
-ultérieur; lire le SHA réel via GitHub `main` avant d'écrire.
+**Date de dernière session : 2026-10-16, America/Toronto.**
+**Repository :** https://github.com/takatakca/ACTIONAVOCAT.CA
+**Branche :** `main`.
+**Dernier SHA technique explicitement vérifié avant documentation :**
+`fdc1692bef76a3fbafc5922ee8b938922635a71f`.
+La documentation mise à jour sera poussée après ce commit : consulter
+**le SHA du HEAD GitHub réel** avant toute modification.
 
-## Dernière tâche terminée
+## Dernière tâche complétée
 
-- Durcissement du serveur HTTP de prévisualisation : méthodes, statuts
-  400/404/405, entêtes de sécurité, routes propres et priorité `.html`.
-- Manifeste de livraison avec SHA et empreintes des pages.
-- Tests d'intégration HTTP et vérification de parité pré-publication.
-- Inventaire public limité et pipeline manuel associé.
-- **CI sur le commit technique réussi** :
-  https://github.com/takatakca/ACTIONAVOCAT.CA/actions/runs/38952518702
-- Suite documentaire : AGENTS.md et cinq documents de continuité.
+- Inventaire en lecture seule des routes publiques réelles (34 URLs).
+- 17 HTTP 200 HTML, 16 HTTP 404, 1 HTTP 403.
+- Génération automatique de 14 suggestions vers des cibles déjà validées
+  HTTP 200, avec 3 chemins non résolus.
+- Production de rapports `public-routes.json`, `broken-links.json` et
+  `apache-redirects.review.conf` (artefacts GitHub, non publiés).
+- Masquage des chemins internes renvoyés par certaines erreurs HTTP.
+- Prévisualisation SEO `noindex,nofollow,noarchive` par défaut.
+- Contrôle de migration bloquant et approbation explicite prévue.
+- **CI réussie** sur le commit `fdc1692` :
+  https://github.com/takatakca/ACTIONAVOCAT.CA/actions/runs/38953718753
+- **Inventaire automatisé réussi** avant dernier changement SEO :
+  https://github.com/takatakca/ACTIONAVOCAT.CA/actions/runs/38953606269
 
-## Tâche en cours
+## Tâche actuellement en cours
 
-Inventaire exhaustif et comparaison avec les fichiers du site de production.
-Les guides juridiques, `.htaccess`, médias et applications réelles ne sont
-pas encore accessibles dans ce dépôt. **Ne pas déployer le candidat sur le
-document root historique avant reprise et vérification de ces éléments.**
+Comparer l'inventaire des URLs et des liens cassés avec les vrais fichiers
+de production. La source réelle est toujours hors GitHub et ses répertoires
+protégés n'ont pas été inspectés.
 
-## Fichiers modifiés dans cette session
+## Fichiers de code modifiés au cours de cette session
 
-- scripts/serve.mjs
-- scripts/build.mjs
-- scripts/preflight.mjs
-- scripts/inventory-public.mjs
-- tests/http.test.mjs
-- tests/preflight.test.mjs
-- package.json
-- .gitignore
-- .github/workflows/ci.yml
-- .github/workflows/inventory.yml
-- .github/workflows/release-gate.yml
-- deploy/release-approval.example.json
-- AGENTS.md
-- docs/PROJECT_STATUS.md
-- docs/TASK_QUEUE.md
-- docs/AGENT_HANDOFF.md
-- docs/DEPLOYMENT.md
-- docs/DECISIONS.md
-- README.md et docs/HANDOFF.md
+- `scripts/build.mjs`, `scripts/serve.mjs`
+- `scripts/preflight.mjs`, `scripts/inventory-public.mjs`
+- `scripts/route-audit.mjs`, `scripts/redirect-preview.mjs`
+- `src/content.mjs`, `src/template.html`
+- `tests/http.test.mjs`, `tests/site.test.mjs`
+- `tests/preflight.test.mjs`, `tests/route-audit.test.mjs`
+- `tests/redirect-preview.test.mjs`
+- `package.json`, `.gitignore`
+- `.github/workflows/ci.yml`, `inventory.yml`, `release-gate.yml`
+- `deploy/release-approval.example.json`
+- `AGENTS.md`, `README.md`, documents de `docs/`
 
-## Vérifications exécutées
+## Vérifications et erreurs
 
-- GitHub : `main`, commit `9ed8a3e` avant reprise, pas de PR ni issue ouverte.
-- L'ancienne surveillance publique a réussi les 15 et 16 octobre 2026.
-- GitHub Actions sur `181bf83` : `npm run build`, `npm test`,
-  contrôles d'artefacts, dépôt d'artefact, tous **réussis**.
-- `npm run preflight` : **échec attendu et requis** jusqu'à ce que
-  l'inventaire et les approbations soient complets.
-- Le script `inventory:public` a été publié mais son exécution manuelle
-  n'est pas attestée dans cette session.
-
-## Problèmes / blocages connus
-
-1. Le code et la configuration exacts de cPanel ne sont pas dans GitHub.
-2. Les routes publiques connues dépassent le nombre de pages candidates.
-3. Le contenu juridique et les informations de confidentialité demandent
-   validation métier.
-4. Pas de déploiement cible authentifié, de preuve de sauvegarde ni de test
-   de rollback.
-5. Les mentions `/admin` et `/apps` proviennent de la relève précédente;
-   elles restent à vérifier sur l'hébergement.
+- GitHub HEAD initial de session : `9ed8a3edb0dfc315946a76032bc31e4d0fa21235`.
+- Aucune PR ou issue ouverte au début de la session.
+- `npm run build`, `npm test` : réussite attestée par GitHub Actions
+  sur les commits techniques, dont `fdc1692`.
+- Les artefacts de prévisualisation et d'inventaire sont produits dans
+  les runs GitHub Actions.
+- `npm run preflight` : **doit échouer** tant que la source d'origine,
+  les anciennes URLs et les approbations sont manquantes.
+- Le crawl relève 17 erreurs HTTP, non corrigées sur la production.
+- Un ancien chemin interne de serveur a été exposé par une redirection
+  d'erreur : les nouveaux rapports masquent ce chemin, mais l'ancien
+  serveur doit être corrigé après accès et sauvegarde.
 
 ## Statut réel du déploiement
 
-**Production historique inchangée. Aucun déploiement du candidat.**
-La compilation GitHub ne constitue pas une preuve de publication du site.
+**Aucun déploiement des nouvelles pages en production.**
+Le site public historique reste en place. Ni l'accès SSH/FTP exact,
+ni le document root, ni le plan de restauration n'ont été validés.
 
-## Accès nécessaires (aucun secret dans GitHub)
+## Accès et preuves nécessaires
 
-- Lecture ou export sûr des fichiers du document root du domaine.
-- Copie et configuration Apache/`.htaccess`, inventaire des applications.
-- Références d'une sauvegarde exploitable et de sa restauration validée.
-- Approbation professionnelle des contenus et données personnelles.
-- Plus tard seulement : identifiants de déploiement limités au document root
-  exact, sous forme de secrets GitHub chiffrés.
+- Export de fichiers et règles du document root du bon compte cPanel,
+  sans importer de secrets ni de données clients dans un dépôt public.
+- Accès de lecture et de validation pour `/admin` et `/apps` sans
+  en publier les contenus privés.
+- Sauvegarde vérifiée et essai de restauration.
+- Approbation des pages juridiques, coordonnées et confidentialité.
+- À terme, identifiants de publication à privilèges minimaux, en secrets
+  GitHub, après confirmation du serveur de destination.
 
 ## Prochaine action exacte
 
-1. Lire AGENTS.md et ces cinq documents; vérifier le nouveau `main`.
-2. Vérifier la CI la plus récente, corriger si nécessaire.
-3. Exécuter le workflow manuel « inventaire public » ou
-   `npm run inventory:public` depuis un accès réseau autorisé.
-4. Comparer ce rapport avec l'export réel cPanel et ajouter les anciennes
-   pages/routes manquantes, sans retranscrire des dossiers confidentiels.
-5. Continuer jusqu'à `npm run preflight` vert et déploiement réversible
-   effectivement vérifié.
+1. Vérifier `main` et la dernière CI, lire `AGENTS.md`.
+2. Consulter `docs/PUBLIC_ROUTE_AUDIT.md` et le dernier inventaire.
+3. Récupérer l'export autorisé des fichiers historiques et `.htaccess`,
+   puis corriger les liens relatifs cassés dans **leur vrai fichier source**.
+4. Réintégrer les guides et médias validés sans supprimer les routes.
+5. Réaliser sauvegarde/restauration et approbation métier, puis seulement
+   déployer de façon réversible après `npm run preflight` réussi.
 
-Une session finie ne se relance pas seule. Un orchestrateur externe
-explicitement autorisé est nécessaire pour une reprise automatisée.
+**Pas de relance automatique de session :** un orchestrateur externe
+explicitement autorisé et configuré est requis; ne pas en inventer un.

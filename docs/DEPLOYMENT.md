@@ -1,62 +1,69 @@
-# DEPLOYMENT — plan de publication sans perte
+# DEPLOYMENT — ACTIONAVOCAT.CA
 
-## Situation connue au 2026-10-16
+## Situation au 16 octobre 2026
 
-- Site public historique : https://actionavocat.ca/, sous la marque ROMANOWSKI AVOCATS.
-- Github : `takatakca/ACTIONAVOCAT.CA`, branche `main`.
-- Hébergeur historique probable : MochaHost / cPanel. **Aucune confirmation
-  d'accès SSH, FTP, document root ni de projet Coolify dans cette session.**
-- Les chemins `/admin` (BasicAuth) et `/apps` (Passenger) sont signalés
-  comme dépendances existantes; leur configuration réelle doit être vérifiée.
-- Le dépôt est **un candidat**, pas une sauvegarde de l'ancien site.
-- Aucune action GitHub ne publie sur l'hébergement de production.
+- Production actuelle : https://actionavocat.ca/, ROMANOWSKI AVOCATS.
+- Source GitHub : `takatakca/ACTIONAVOCAT.CA`, `main`.
+- Hébergement historique cPanel/MochaHost : hypothèse de relève.
+  Compte, document root, accès et applications : **non vérifiés en session**.
+- Le dépôt n'est pas la copie complète du site original.
+- **Pas de déploiement de production depuis GitHub aujourd'hui.**
 
-## Production : contrôles préalables
+## Commandes
 
-1. Vérifier le vrai serveur cible et l'identité du domaine.
-2. Exporter, horodater et vérifier la sauvegarde hors dépôt de tous les
-   fichiers et de la configuration de l'ancienne application; valider la
-   méthode de restauration sur copie.
-3. Tester les règles Apache de l'ancien `.htaccess` sur copie isolée.
-   Ne pas remplacer ce fichier par le fragment d'exemple.
-4. Faire l'inventaire exhaustif des routes, des actifs et des services
-   hérités. Les URLs sous `/service` ont des sous-répertoires et parfois
-   un fichier `.html` adjacent : gérer la priorité correctement.
-5. Faire approuver le contenu juridique, les coordonnées, la politique de
-   confidentialité et la protection des données.
-6. Générer le site : `npm run build && npm test`.
-7. Vérifier la parité de toutes les URLs publiques et exécuter
-   `npm run preflight`. L'échec actuel est **voulu**.
-8. Une fois tous les critères prouvés, enregistrer les métadonnées non
-   sensibles dans `deploy/release-approval.json` (modèle fourni).
-9. Déployer d'abord la copie vers un emplacement temporaire **non routé**
-   vers le domaine public, puis tester les accès et la restauration.
-10. Procéder à la bascule seulement avec procédure de rollback disponible.
+```sh
+npm run build              # candidats noindex
+npm test                   # tests HTTP, statiques, garde
+npm run dev                # http://127.0.0.1:4173
+npm run audit:live         # liste des URL publiques connues
+npm run inventory:public   # crawl public, rapports dans reports/
+npm run preflight          # échec attendu actuellement
+```
 
-## Déploiement actuel
+Le workflow `.github/workflows/ci.yml` construit et archive
+`actionavocat-static-preview`. Le workflow `inventory.yml` explore les
+routes publiques lors d'un changement de scripts/liste, ou manuellement,
+sans accéder aux dossiers privés.
 
-Le workflow `.github/workflows/ci.yml` produit l'artefact
-`actionavocat-static-preview`, pas une publication du domaine.
-Le workflow `release-gate.yml` exécute un contrôle manuel qui échoue tant que
-des routes ou validations manquent. Il **ne déploie rien** même une fois vert.
+L'artefact `reports/apache-redirects.review.conf` contient des
+**suggestions**, pas un `.htaccess` complet et jamais installé par CI.
+Corriger les sources HTML historiques avant d'ajouter des redirections.
 
-Le workflow `inventory.yml` est manuel et publie seulement un rapport de
-routes publiques dans un artefact temporaire, sans identifiants.
+## Processus de migration
 
-Ne pas recopier un pipeline FTP provenant d'un autre domaine sans connaître
-le compte propriétaire d'actionavocat.ca et la destination exacte.
+1. Identifier le compte et la configuration réelle; exporter le contenu
+   public actuel en sauvegarde hors dépôt, avec contrôle d'intégrité.
+2. Préserver `/admin`, `/apps`, Passenger, BasicAuth, `.htaccess`
+   et médias, y compris les pages juridiques sous plusieurs sous-dossiers.
+3. Restaurer la sauvegarde dans un espace isolé et tester un rollback.
+4. Corriger les liens publics cassés identifiés par l'inventaire,
+   sans supprimer une restriction Apache légitime.
+5. Comparer chaque route existante (y compris le sitemap complet)
+   à une page ou à une redirection explicitement approuvée.
+6. Obtenir approbation de confidentialité, contenus et coordonnées.
+7. Tester la candidate sur une adresse de prévisualisation protégée
+   par accès et `noindex`. Tous les builds sont `noindex` par défaut.
+8. Après toutes ces vérifications, préparer une compilation indexable
+   avec `ACTIONAVOCAT_INDEXABLE=true npm run build`.
+9. Faire passer `npm run preflight` (garde rouge aujourd'hui).
+   Il exige un `deploy/release-approval.json` renseigné avec
+   des références non sensibles aux vérifications/approbations.
+10. Publier avec méthode de remplacement réversible et accès minimal,
+    puis vérifier réellement les routes, certificats, fonctionnalités
+    héritées et version servie (manifeste SHA).
+11. Garder la restauration immédiatement disponible si la vérification
+    post-déploiement échoue.
 
-## Vérification de version
+**Ne pas** coller le fragment d'exemple dans le `.htaccess` réel sans
+avoir lu les directives Apache/Passenger actuelles. Aucun accès FTP/SSH
+de cet environnement n'a été prouvé.
 
-`dist/release-manifest.json` contient `sourceSha`, routes et SHA-256 des
-pages. Après futur déploiement, si le fichier est volontairement exposé,
-comparer ce SHA avec le commit GitHub publié. En son absence, vérifier le
-contenu servi et les journaux; ne jamais affirmer un déploiement sur la seule
-base de GitHub Actions.
+## Version et preuves
 
-## Retour arrière
+`dist/release-manifest.json` contient `sourceSha`, `indexable` et les
+empreintes SHA-256 des pages. Une CI verte n'est pas une preuve du contenu
+servi sur actionavocat.ca. Une publication réussie devra être démontrée
+sur la cible avec ce manifeste et des tests HTTP.
 
-Garder une copie intacte de l'ancien document root et du `.htaccess`.
-La procédure exacte dépend du service réellement identifié. Tester et
-documenter la restauration avant toute migration et ne pas retirer les
-répertoires `/admin` ou `/apps` lors d'un déploiement statique.
+La configuration d'un éventuel orchestrateur autonome de reprises
+nécessite un service externe autorisé; aucun n'est configuré ici.

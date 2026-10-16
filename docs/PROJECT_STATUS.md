@@ -1,42 +1,44 @@
 # PROJECT_STATUS — ACTIONAVOCAT.CA
 
-Date de vérification : **2026-10-16** (America/Toronto).
+Actualisation : **2026-10-16**, America/Toronto.
 
-| Élément | État vérifié |
+| Domaine | Statut constaté |
 | --- | --- |
 | GitHub | https://github.com/takatakca/ACTIONAVOCAT.CA |
-| Branche | `main` |
-| SHA de base examiné | `9ed8a3edb0dfc315946a76032bc31e4d0fa21235` |
-| Dernier commit technique validé avant documentation | `181bf83f51c94c9e8910cc6546bd57475251e993` |
-| CI technique | Succès : https://github.com/takatakca/ACTIONAVOCAT.CA/actions/runs/38952518702 |
-| Surveillance publique | Succès au 2026-10-16 sur l'ancien site (workflow GitHub Actions) |
-| PR ouvertes / issues ouvertes | Aucune au moment de l'audit |
-| Candidate | Neuf pages HTML statiques, CSS/JS et SEO |
-| Production | Site actif antérieur, non reconstruit à partir du dépôt |
-| Publication de ce dépôt en production | **NON vérifiée / NON effectuée** |
-| Déploiement automatique | **Désactivé pour la production** |
-| Garde de migration | Échec attendu tant que les anciennes routes et validations manquent |
+| Branche active | `main` |
+| Commit technique vérifié avant documentation | `fdc1692bef76a3fbafc5922ee8b938922635a71f` |
+| CI | Succès : https://github.com/takatakca/ACTIONAVOCAT.CA/actions/runs/38953718753 |
+| Surveillance site historique | Succès le 15 et 16 octobre 2026 |
+| Audit public | 34 URLs ; 17 HTML 200, 16 HTTP 404, 1 HTTP 403 |
+| Liens réparables recensés | 14 propositions vers des cibles HTTP 200 ; 3 cas à examiner |
+| Candidat GitHub | 9 pages statiques et routes propres de prévisualisation |
+| Protection SEO prévisualisation | `noindex,nofollow` et `robots.txt` Disallow par défaut |
+| Publication dans actionavocat.ca | **Non effectuée et non vérifiée** |
+| Remplacement du site historique | Bloqué par la parité, l'export cPanel et la validation métier |
 
-## Terminé
+## Livrables opérationnels
 
-- Construction sans dépendances npm tierces, vérifiée sur GitHub Actions.
-- Navigation mobile et pages vitrine, génération des métadonnées et sitemap.
-- Serveur de prévisualisation, réponses HTTP sécurisées, tests d'intégration.
-- Manifeste SHA de contenu permettant de comparer des artefacts.
-- Script de surveillance du site public en lecture seule et workflow quotidien.
-- Inventaire public borné (80 routes par défaut, 100 maximum) activable manuellement.
-- Contrôle de parité des URLs publiques avec approbations explicites.
-- Artefact de build automatiquement déposé sur GitHub Actions.
+- Site statique responsive en français, navigation clavier et métadonnées.
+- Générateur HTML/sitemap/robots et manifeste d'empreintes SHA-256.
+- Serveur local avec réponse 400/404/405, entêtes de sécurité et URLs propres.
+- Tests HTTP, contrôle de version, parité, garde de migration.
+- CI GitHub Actions verte, artefact de prévisualisation, surveillance
+  quotidienne en lecture seule.
+- Inventaire public sur modification de la liste de routes et en manuel.
+- Rapport d'anomalies + suggestions `RedirectMatch` exactes et vérifiables.
+- AGENTS.md et documents de continuité de l'agent.
 
-## Non terminé
+## Travaux bloquants et risques actuels
 
-- Source d'origine non importée dans GitHub : il manque les guides complets,
-  médias, règles Apache réelles, applications Passenger, administration.
-- Le contrôle de parité détecte des URLs existantes absentes du candidat.
-- Vérification métier du contenu juridique et confidentialité non documentée.
-- Pas de preuve d'accès/sauvegarde de cPanel, de test de restauration, de
-  correspondance de document root ni de validation de domaine/staging.
-- Aucun pipeline n'écrit sur MochaHost/Coolify, par sécurité.
+Le site actuel n'est **pas** représenté intégralement dans le dépôt.
+Il manque le code source de production, les guides complets, les médias,
+l'administration, les applications Passenger et la configuration Apache
+réelle. Une migration sans comparaison serait destructive.
 
-Cette page ne prétend pas que l'application est terminée ni que le nouveau
-candidat remplace l'ancien site.
+Les 17 anomalies du crawl sont documentées dans
+[PUBLIC_ROUTE_AUDIT.md](PUBLIC_ROUTE_AUDIT.md). Elles appartiennent au
+site hébergé actuel et ne sont pas corrigées simplement par le push GitHub.
+
+Il manque une sauvegarde vérifiée, un test de restauration, l'accès confirmé
+au document root et les approbations de confidentialité/contenu juridique.
+L'exécution `npm run preflight` doit rester rouge avant leur résolution.
