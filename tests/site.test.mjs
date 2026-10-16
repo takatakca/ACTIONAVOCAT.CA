@@ -27,6 +27,7 @@ test("output exists and links are routed internally", async () => {
     const rendered = await read(file);
     assert.match(rendered, /<html lang="fr-CA">/);
     assert.match(rendered, /<meta name="description"/);
+    assert.match(rendered, /<meta name="robots" content="noindex,nofollow,noarchive">/);
     assert.match(rendered, /<link rel="canonical"/);
     assert.match(rendered, /application\/ld\+json/);
     assert.match(rendered, /Aller au contenu principal/);
@@ -52,4 +53,10 @@ test("no deployment will overwrite protected cPanel endpoints", async () => {
   const workflow = await read(".github/workflows/ci.yml");
   assert.doesNotMatch(workflow, /scp |rsync |ssh /i);
   assert.match(workflow, /npm run build/);
+});
+
+test("preview robots.txt disallows indexing by default", async () => {
+  const robots = await read("dist/robots.txt");
+  assert.match(robots, /Disallow: \/$/m);
+  assert.doesNotMatch(robots, /Allow: \/$/m);
 });

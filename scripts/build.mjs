@@ -8,6 +8,8 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const out = join(root, "dist");
 const template = await readFile(join(root, "src/template.html"), "utf8");
 const site = "https://actionavocat.ca";
+// Fail safe: a candidate or staging build must not be indexed by search engines.
+const indexable = process.env.ACTIONAVOCAT_INDEXABLE === "true";
 const html = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
 const pathFor = (slug) => slug ? slug + ".html" : "index.html";
 const urlFor = (slug) => slug ? "/" + slug : "/";
@@ -113,6 +115,7 @@ function render(page) {
   return template
     .replaceAll("{{TITLE}}", html(page.seoTitle || page.title))
     .replaceAll("{{DESCRIPTION}}", html(page.description))
+    .replaceAll("{{ROBOTS}}", indexable ? "index,follow,max-image-preview:large" : "noindex,nofollow,noarchive")
     .replaceAll("{{CANONICAL}}", html(canonical))
     .replaceAll("{{JSONLD}}", jsonld)
     .replaceAll("{{ASSETS}}", assets)
@@ -138,11 +141,13 @@ for (const page of pages) {
   await writeFile(target, rendered, "utf8");
   outputPages.push({ route: urlFor(page.slug), file: pathFor(page.slug), sha256: createHash("sha256").update(rendered).digest("hex") });
 }
-await writeFile(join(out, "robots.txt"), "User-agent: *\nAllow: /\nSitemap: " + site + "/sitemap.xml\n", "utf8");
+await writeFile(join(out, "robots.txt"), indexable ?
+  "User-agent: *\nAllow: /\nSitemap: " + site + "/sitemap.xml\n" :
+  "User-agent: *\nDisallow: /\n", "utf8");
 await writeFile(join(out, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   pages.map((p) => '  <url><loc>' + site + urlFor(p.slug) + '</loc></url>').join("\n") +
   '\n</urlset>\n', "utf8");
 const sourceSha = /^[0-9a-f]{40}$/.test(process.env.GITHUB_SHA || "") ? process.env.GITHUB_SHA : "local";
-await writeFile(join(out, "release-manifest.json"), JSON.stringify({ sourceSha, generatedAt: new Date().toISOString(), pages: outputPages }, null, 2) + "\n");
+await writeFile(join(out, "release-manifest.json"), JSON.stringify({ sourceSha, indexable, generatedAt: new Date().toISOString(), pages: outputPages }, null, 2) + "\n");
 console.log("Build OK — " + pages.length + " pages generated in dist/. No production files touched.");

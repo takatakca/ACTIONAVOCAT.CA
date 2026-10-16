@@ -12,8 +12,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Compiler le candidat
+      - name: Compiler le candidat en mode indexable (garde de parité obligatoire)
         run: npm run build
+        env:
+          ACTIONAVOCAT_INDEXABLE: "true"
       - name: Empêcher une perte de pages lors de la migration
         run: npm run preflight
       - name: Publier la preuve de prévisualisation uniquement si prêt

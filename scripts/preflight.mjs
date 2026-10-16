@@ -20,6 +20,7 @@ try {
   if (!Array.isArray(manifest.pages) || manifest.pages.length !== pages.length) {
     errors.push("Le manifeste ne couvre pas toutes les pages.");
   }
+  if (manifest.indexable !== true) errors.push("Candidat marqué noindex : reconstruire explicitement en mode publication après approbations.");
   if (process.env.GITHUB_SHA && manifest.sourceSha !== process.env.GITHUB_SHA) {
     errors.push("Le SHA du manifeste ne correspond pas au commit actif.");
   }
