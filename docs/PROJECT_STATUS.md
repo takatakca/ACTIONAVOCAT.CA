@@ -5,9 +5,9 @@ Date de vérification : **2026-10-16** (America/Toronto).
 | Élément | État vérifié |
 | --- | --- |
 | GitHub | https://github.com/takatakca/ACTIONAVOCAT.CA |
-| Branche | \`main\` |
-| SHA de base examiné | \`9ed8a3edb0dfc315946a76032bc31e4d0fa21235\` |
-| Dernier commit technique validé avant documentation | \`181bf83f51c94c9e8910cc6546bd57475251e993\` |
+| Branche | `main` |
+| SHA de base examiné | `9ed8a3edb0dfc315946a76032bc31e4d0fa21235` |
+| Dernier commit technique validé avant documentation | `181bf83f51c94c9e8910cc6546bd57475251e993` |
 | CI technique | Succès : https://github.com/takatakca/ACTIONAVOCAT.CA/actions/runs/38952518702 |
 | Surveillance publique | Succès au 2026-10-16 sur l'ancien site (workflow GitHub Actions) |
 | PR ouvertes / issues ouvertes | Aucune au moment de l'audit |

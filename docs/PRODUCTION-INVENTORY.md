@@ -16,6 +16,10 @@ La production publique https://actionavocat.ca/ est active sous la marque
 - /service/droit-affaires/contrats-commerciaux
 - /service/droits-constitutionnels
 - /realisation-assurance
+- /service/droit-travail
+- /service/droit-travail/obligations-de-l-employeur-cnesst
+- /service/litiges-representation/requete-d-urgence-ordonnance-de-sauvegarde
+- /service/droit-affaires/prevenir-les-clauses-abusives-dans-les-contrats-commerciaux
 
 Ce relevé n'est pas un sitemap exhaustif ; **ne pas retirer les pages absentes
 de cette liste**. Certaines possèdent un long contenu éditorial et des liens

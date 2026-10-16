@@ -6,12 +6,12 @@ actualisée à chaque session, est maintenant
 
 ## État initial observé le 2026-10-14
 
-- Dépôt GitHub d'origine : uniquement \`README.md\`.
-- Branche \`main\` : \`81b2455780bff2365671f535f4d2d8373858866e\`.
+- Dépôt GitHub d'origine : uniquement `README.md`.
+- Branche `main` : `81b2455780bff2365671f535f4d2d8373858866e`.
 - Site public ROMANOWSKI AVOCATS déjà disponible hors dépôt.
-- Chemins signalés à préserver : \`/admin\` sous BasicAuth et \`/apps\`
-  sous Passenger, dont \`/apps/romanowski\` (vérification cPanel nécessaire).
-- \`.htaccess\` en place et coexistence de fichiers \`.html\` avec des
+- Chemins signalés à préserver : `/admin` sous BasicAuth et `/apps`
+  sous Passenger, dont `/apps/romanowski` (vérification cPanel nécessaire).
+- `.htaccess` en place et coexistence de fichiers `.html` avec des
   sous-répertoires pour les anciennes pages.
 
 Le candidat statique construit sur GitHub n'est pas une restauration
