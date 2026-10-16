@@ -1,0 +1,25 @@
+name: ActionAvocat — garde de publication manuel
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  release-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compiler le candidat
+        run: npm run build
+      - name: Empêcher une perte de pages lors de la migration
+        run: npm run preflight
+      - name: Publier la preuve de prévisualisation uniquement si prêt
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: actionavocat-release-candidate
+          path: dist/
+          retention-days: 7

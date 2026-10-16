@@ -1,4 +1,5 @@
 import { readFile, writeFile, mkdir, rm, copyFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pages, services } from "../src/content.mjs";
@@ -126,17 +127,22 @@ for (const asset of ["style.css", "app.js", "favicon.svg"]) {
   await copyFile(join(root, "src/assets", asset), join(out, "assets", asset));
 }
 const targets = new Set();
+const outputPages = [];
 for (const page of pages) {
   if (!/^[a-z0-9/-]*$/.test(page.slug) || page.slug.includes("..")) throw new Error("Unsafe URL slug: " + page.slug);
   const target = join(out, pathFor(page.slug));
   if (targets.has(target)) throw new Error("Duplicate URL: " + page.slug);
   targets.add(target);
   await mkdir(dirname(target), { recursive: true });
-  await writeFile(target, render(page), "utf8");
+  const rendered = render(page);
+  await writeFile(target, rendered, "utf8");
+  outputPages.push({ route: urlFor(page.slug), file: pathFor(page.slug), sha256: createHash("sha256").update(rendered).digest("hex") });
 }
 await writeFile(join(out, "robots.txt"), "User-agent: *\nAllow: /\nSitemap: " + site + "/sitemap.xml\n", "utf8");
 await writeFile(join(out, "sitemap.xml"),
   '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
   pages.map((p) => '  <url><loc>' + site + urlFor(p.slug) + '</loc></url>').join("\n") +
   '\n</urlset>\n', "utf8");
+const sourceSha = /^[0-9a-f]{40}$/.test(process.env.GITHUB_SHA || "") ? process.env.GITHUB_SHA : "local";
+await writeFile(join(out, "release-manifest.json"), JSON.stringify({ sourceSha, generatedAt: new Date().toISOString(), pages: outputPages }, null, 2) + "\n");
 console.log("Build OK — " + pages.length + " pages generated in dist/. No production files touched.");
