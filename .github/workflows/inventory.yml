@@ -26,6 +26,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: actionavocat-public-inventory
-          path: reports/public-routes.json
+          path: |
+            reports/public-routes.json
+            reports/broken-links.json
           if-no-files-found: error
           retention-days: 7

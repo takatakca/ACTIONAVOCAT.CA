@@ -5,6 +5,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { join } from "node:path";
 import { productionRoutes } from "../src/content.mjs";
+import { analyzeRoutes, safeFinalPath } from "./route-audit.mjs";
 
 const origin = "https://actionavocat.ca";
 const host = new URL(origin).hostname;
@@ -40,7 +41,7 @@ for (let index = 0; index < queue.length && visited.size < max; index++) {
     const contentType = response.headers.get("content-type") || "";
     const html = accepted && response.ok && contentType.includes("text/html") ?
       await response.text() : "";
-    results.push({ path, httpStatus: response.status, finalPath: accepted ? finalUrl.pathname : null, html: Boolean(html) });
+    results.push({ path, httpStatus: response.status, finalPath: accepted ? safeFinalPath(finalUrl.pathname) : null, html: Boolean(html) });
     if (html) {
       const matches = html.matchAll(/<a\b[^>]*\bhref\s*=\s*["']([^"']+)["']/gi);
       for (const match of matches) {
@@ -63,6 +64,9 @@ const report = {
   results
 };
 await writeFile(join(output, "public-routes.json"), JSON.stringify(report, null, 2) + "\n");
+const findings = analyzeRoutes(results);
+await writeFile(join(output, "broken-links.json"), JSON.stringify({ origin, generatedAt: report.generatedAt, ...findings }, null, 2) + "\n");
 console.log("Inventaire terminé : " + results.length + " pages ; " +
   results.filter((row) => !row.html).length + " réponses non HTML/échecs.");
-console.log("Artefact : reports/public-routes.json. Aucune écriture vers le site public.");
+console.log("Redirections proposées sous réserve de vérification : " + findings.redirects.length + "; problèmes non résolus : " + findings.unresolved.length);
+console.log("Artefacts : reports/public-routes.json et reports/broken-links.json. Aucune écriture vers le site public.");

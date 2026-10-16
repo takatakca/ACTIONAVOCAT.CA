@@ -108,6 +108,8 @@ export const productionRoutes = [
   "/service/droit-affaires/contrats-commerciaux",
   "/service/droits-constitutionnels",
   "/realisation-assurance",
+  "/contact",
+  "/services",
   "/service/droit-travail",
   "/service/droit-travail/obligations-de-l-employeur-cnesst",
   "/service/litiges-representation/requete-d-urgence-ordonnance-de-sauvegarde",
