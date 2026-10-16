@@ -1,5 +1,11 @@
 name: ActionAvocat — inventaire public manuel
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content.mjs'
+      - 'scripts/inventory-public.mjs'
+      - '.github/workflows/inventory.yml'
   workflow_dispatch:
 permissions:
   contents: read
