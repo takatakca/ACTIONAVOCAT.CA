@@ -1,5 +1,18 @@
 # AGENT_HANDOFF — ACTIONAVOCAT.CA
 
+## Revue séquentielle — 7 novembre 2026, signée Codex
+
+Mandat actuel du propriétaire : revoir, fusionner, pousser et vérifier les dépôts GitHub un par un. DÉBUT et ÉTAPE consignés dans l’issue 1 et dans le journal Drive d’opérations avant les changements.
+
+- PR documentaire 2 relue et fusionnée à `23dc4adb20be765f8ef76af97dfbaef76057f62d`. La seule branche de travail est maintenant intégrée. CI `static-preview` réussie.
+- Vérification fraîche Node 22 : `npm run build` réussi, `npm test` 10/10, `npm run preflight` bloqué comme prévu. La candidate contient 9 pages, mais 13 routes publiques connues ne sont pas reprises. Le build reste noindex et la preuve de publication est absente. Ne pas remplir artificiellement les attestations manquantes.
+- `https://actionavocat.ca/` répond HTTP 200. Aucun remplacement de ses fichiers, DNS, règles Apache, `/admin` ou `/apps` n’a été réalisé.
+- Aucune application liée à ce dépôt dans les deux contrôleurs Coolify consultés; aucun onglet cPanel connecté disponible. Le véritable export de production, les médias et la configuration, puis la sauvegarde/restauration restent nécessaires avant une publication complète.
+- FIN de cette revue : fusion/push documentaire terminés, **publication de production techniquement bloquée**. Le dernier commit documentaire et sa CI sont suivis dans l’issue 1. Les zones sont libérées et la tournée continue sur le dépôt suivant. La source applicative n’a pas été modifiée.
+
+Signature : Codex — 2026-11-07 UTC. Les notes historiques suivantes sont conservées.
+
+
 **Date de dernière session : 2026-10-16, America/Toronto.**
 **Repository :** https://github.com/takatakca/ACTIONAVOCAT.CA
 **Branche :** `main`.
